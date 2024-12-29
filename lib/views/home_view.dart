@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/views/themes/CustomAppBar.dart';
+import 'package:todolist/views/widgets/add_task_dialog.dart';
 import 'package:todolist/views/widgets/date_view.dart';
 import '../controllers/task_controller.dart';
 import '../models/task_model.dart';
@@ -11,9 +12,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final TaskController controller = TaskController();
-  final TextEditingController taskTitleController = TextEditingController();
-  final TextEditingController priorityController = TextEditingController();
-  DateTime? selectedDeadline;
 
   @override
   Widget build(BuildContext context) {
@@ -23,78 +21,17 @@ class _HomeViewState extends State<HomeView> {
         appBar: CustomAppBar(title: 'To Do List'),
         body: Column(
           children: [
-            DateView(controller: controller), // عرض التاريخ تحت الـ AppBar
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: taskTitleController,
-                    decoration: InputDecoration(
-                      labelText: 'Task Title',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    controller: priorityController,
-                    decoration: InputDecoration(
-                      labelText: 'Priority (High/Medium/Low)',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text(
-                        selectedDeadline == null
-                            ? 'Select Deadline'
-                            : 'Deadline: ${selectedDeadline!.year}-${selectedDeadline!.month}-${selectedDeadline!.day}',
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.calendar_today),
-                        onPressed: () async {
-                          DateTime? newDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          );
-                          if (newDate != null) {
-                            setState(() {
-                              selectedDeadline = newDate;
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (taskTitleController.text.isNotEmpty &&
-                          priorityController.text.isNotEmpty &&
-                          selectedDeadline != null) {
-                        setState(() {
-                          controller.addTask(
-                            taskTitleController.text,
-                            priorityController.text,
-                            selectedDeadline!,
-                          );
-                          taskTitleController.clear();
-                          priorityController.clear();
-                          selectedDeadline = null;
-                        });
-                      }
-                    },
-                    child: Text('Add Task'),
-                  ),
-                ],
-              ),
-            ),
+            DateView(controller: controller),
             Divider(thickness: 2),
             Expanded(
-              child: ListView.builder(
+              child: controller.tasks.isEmpty
+                  ? Center(
+                child: Text(
+                  'There is no tasks',
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+              )
+                  : ListView.builder(
                 itemCount: controller.tasks.length,
                 itemBuilder: (context, index) {
                   final Task task = controller.tasks[index];
@@ -117,6 +54,24 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AddTaskDialog(
+                  onSave: (String title, String priority, String? descrebtion) {
+                    setState(() {
+                      controller.addTask(title, priority, DateTime.now(), descrebtion);
+                    });
+                  },
+                );
+              },
+            );
+          },
+          child: Icon(Icons.add),
+        ),
+
       ),
     );
   }
