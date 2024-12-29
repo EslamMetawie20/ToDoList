@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/views/themes/CustomAppBar.dart';
-import 'package:todolist/views/themes/theme.dart';
+import 'package:todolist/views/widgets/date_view.dart';
 import '../controllers/task_controller.dart';
 import '../models/task_model.dart';
 
@@ -14,14 +14,16 @@ class _HomeViewState extends State<HomeView> {
   final TextEditingController taskTitleController = TextEditingController();
   final TextEditingController priorityController = TextEditingController();
   DateTime? selectedDeadline;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-       home: Scaffold(
+      home: Scaffold(
         appBar: CustomAppBar(title: 'To Do List'),
         body: Column(
           children: [
+            DateView(controller: controller), // عرض التاريخ تحت الـ AppBar
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -115,8 +117,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-        )
+      ),
     );
   }
 }
-

@@ -1,7 +1,7 @@
 class Task {
   String title;
-  String priority; // الأولوية
-  DateTime deadline; // الموعد النهائي
+  String priority;
+  DateTime deadline;
   bool isCompleted;
 
   Task({
