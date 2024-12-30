@@ -11,7 +11,7 @@ class AddTaskDialog extends StatefulWidget {
 
 class _AddTaskDialogState extends State<AddTaskDialog> {
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController(); // حقل للوصف
+  final TextEditingController descriptionController = TextEditingController();
   String? priority;
 
   @override
