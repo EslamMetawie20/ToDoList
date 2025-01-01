@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/views/themes/theme.dart';
 
 class AddTaskDialog extends StatefulWidget {
   final Function(String, String, String?) onSave;
-
-  AddTaskDialog({required this.onSave});
+  const AddTaskDialog({super.key, required this.onSave});
 
   @override
   _AddTaskDialogState createState() => _AddTaskDialogState();
@@ -17,56 +17,135 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add Task'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: titleController,
-            decoration: InputDecoration(labelText: 'Title'),
-          ),
-          SizedBox(height: 10),
-          TextField(
-            controller: descriptionController,
-            decoration: InputDecoration(labelText: 'Description (optional)'),
-          ),
-          SizedBox(height: 10),
-          Text('Priority:'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () => setState(() => priority = 'High'),
-                style: ElevatedButton.styleFrom(primary: Colors.red),
-                child: Text('High'),
+      backgroundColor: AppColors.offWhite,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      title: Text(
+        'Add Task',
+        style: TextStyle(color: AppColors.darkBlue, fontWeight: FontWeight.bold),
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: InputDecoration(
+                labelText: 'Title',
+                prefixIcon: Icon(Icons.title, color: AppColors.blue),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.blue),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.blue),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.darkBlue, width: 2),
+                ),
+                labelStyle: TextStyle(color: AppColors.blue),
+                filled: true,
+                fillColor: Colors.white,
               ),
-              ElevatedButton(
-                onPressed: () => setState(() => priority = 'Medium'),
-                style: ElevatedButton.styleFrom(primary: Colors.orange),
-                child: Text('Medium'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: descriptionController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                labelText: 'Description',
+                prefixIcon: Icon(Icons.description, color: AppColors.blue),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.blue),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.blue),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.darkBlue, width: 2),
+                ),
+                labelStyle: TextStyle(color: AppColors.blue),
+                filled: true,
+                fillColor: Colors.white,
               ),
-              ElevatedButton(
-                onPressed: () => setState(() => priority = 'Low'),
-                style: ElevatedButton.styleFrom(primary: Colors.green),
-                child: Text('Low'),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Priority:',
+              style: TextStyle(
+                color: AppColors.darkBlue,
+                fontWeight: FontWeight.w500,
               ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              value: priority,
+              items: [
+                DropdownMenuItem(value: 'High', child: Text('High')),
+                DropdownMenuItem(value: 'Medium', child: Text('Medium')),
+                DropdownMenuItem(value: 'Low', child: Text('Low')),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  priority = value;
+                });
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.blue),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.blue),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.darkBlue, width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              style: TextStyle(color: AppColors.darkBlue),
+            ),
+          ],
+        ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('Cancel'),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: AppColors.blue),
+          ),
         ),
         ElevatedButton(
           onPressed: () {
             if (titleController.text.isNotEmpty && priority != null) {
-              widget.onSave(titleController.text, priority!, descriptionController.text);
+              widget.onSave(
+                titleController.text,
+                priority!,
+                descriptionController.text,
+              );
               Navigator.of(context).pop();
             }
           },
-          child: Text('Save'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.darkBlue,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
+          child: const Text(
+            'Save',
+            style: TextStyle(color: AppColors.offWhite),
+          ),
         ),
       ],
     );

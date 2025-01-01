@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- الخلفية البيضاء -->
+    <!-- خلفية الشاشة -->
     <item android:drawable="@android:color/white" />
 
-    <!-- إضافة الصورة -->
+    <!-- الصورة الخاصة بشاشة البداية -->
     <item>
         <bitmap
-            android:src="@drawable/first"/>
+            android:gravity="center"
+            android:src="@drawable/first" />
     </item>
 </layer-list>
