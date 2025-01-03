@@ -25,6 +25,7 @@ class _DateViewState extends State<DateView> {
     setState(() {
       currentDate = currentDate.add(Duration(days: 1));
       widget.controller.currentDate = currentDate;
+      widget.controller.notifyListeners(); // إشعار عند تغيير التاريخ
     });
   }
 
@@ -32,38 +33,42 @@ class _DateViewState extends State<DateView> {
     setState(() {
       currentDate = currentDate.subtract(Duration(days: 1));
       widget.controller.currentDate = currentDate;
+      widget.controller.notifyListeners(); // إشعار عند تغيير التاريخ
     });
   }
 
   @override
   Widget build(BuildContext context) {
     DateTime today = DateTime.now();
-    DateTime yesterday = today.subtract(Duration(days: 1));
     DateTime tomorrow = today.add(Duration(days: 1));
+    DateTime yesterday = today.subtract(Duration(days: 1));
 
-    String displayDate = currentDate.year == today.year &&
+    String displayDate;
+
+    if (currentDate.year == today.year &&
         currentDate.month == today.month &&
-        currentDate.day == today.day
-        ? 'Today'
-        : currentDate.year == yesterday.year &&
-        currentDate.month == yesterday.month &&
-        currentDate.day == yesterday.day
-        ? 'Yesterday'
-        : currentDate.year == tomorrow.year &&
+        currentDate.day == today.day) {
+      displayDate = 'Today';
+    } else if (currentDate.year == tomorrow.year &&
         currentDate.month == tomorrow.month &&
-        currentDate.day == tomorrow.day
-        ? 'Tomorrow'
-        : '${currentDate.year}-${currentDate.month}-${currentDate.day}';
+        currentDate.day == tomorrow.day) {
+      displayDate = 'Tomorrow';
+    } else if (currentDate.year == yesterday.year &&
+        currentDate.month == yesterday.month &&
+        currentDate.day == yesterday.day) {
+      displayDate = 'Yesterday';
+    } else {
+      displayDate =
+      '${currentDate.year}-${currentDate.month.toString().padLeft(2, '0')}-${currentDate.day.toString().padLeft(2, '0')}';
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: currentDate.isAtSameMomentAs(today) ? null : moveToLastDay,
-          color: currentDate.isAtSameMomentAs(today)
-              ? Colors.grey
-              : AppColors.darkBlue,
+          onPressed: moveToLastDay,
+          color: AppColors.darkBlue,
         ),
         Text(
           displayDate,

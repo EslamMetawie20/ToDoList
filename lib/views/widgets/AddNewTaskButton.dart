@@ -48,12 +48,16 @@ class _AddNewTaskButtonState extends State<AddNewTaskButton>
                     builder: (context) {
                       return AddTaskDialog(
                         onSave: (String title, String priority, String? descrebtion) {
-                          setState(() {
-                            widget.controller.addTask(title, priority, DateTime.now(), descrebtion);
-                            SnackbarHelper.showMissionCreatedSnackbar(scaffoldContext, title);
-                            Future.delayed(Duration(milliseconds: 500), () {
-                              Navigator.pop(context);
-                            });
+                          widget.controller.addTask(
+                            title,
+                            priority,
+                            widget.controller.currentDate ?? DateTime.now(),
+                            descrebtion,
+                          );
+                          SnackbarHelper.showMissionCreatedSnackbar(
+                              scaffoldContext, title);
+                          Future.delayed(Duration(milliseconds: 500), () {
+                            Navigator.pop(context);
                           });
                         },
                       );
