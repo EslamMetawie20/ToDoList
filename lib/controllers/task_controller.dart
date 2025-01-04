@@ -57,5 +57,7 @@ class TaskController extends ChangeNotifier {
     tasks.removeWhere((task) => task.id == id);
     notifyListeners();
     _dbHelper.deleteTask(id);
+
+
   }
 }

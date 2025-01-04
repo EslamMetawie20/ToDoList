@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/models/task_model.dart';
 
+import '../../controllers/task_controller.dart';
 import '../themes/theme.dart';
 
 class ShowTaskDialog extends StatelessWidget {
@@ -10,6 +12,61 @@ class ShowTaskDialog extends StatelessWidget {
     Key? key,
     required this.task,
   }) : super(key: key);
+
+  void _showDeleteConfirmation(BuildContext context, Task task) {
+    final controller = Provider.of<TaskController>(context, listen: false);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.offWhite,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            'Delete Confirmation',
+            style: TextStyle(
+              color: AppColors.darkBlue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this task?',
+            style: TextStyle(
+              color: AppColors.blue,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: AppColors.blue,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.deleteTask(task.id!); // استدعاء الحذف
+                Navigator.pop(context); // إغلاق نافذة التأكيد
+                Navigator.pop(context); // إغلاق نافذة عرض المهمة
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -127,20 +184,42 @@ class ShowTaskDialog extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.check_circle,
-                  color: task.isCompleted ? Colors.green : Colors.grey,
-                  size: 20,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle,
+                      color: task.isCompleted ? Colors.green : Colors.grey,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      task.isCompleted ? 'Completed' : 'Not completed',
+                      style: TextStyle(
+                        color: task.isCompleted ? Colors.green : Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  task.isCompleted ? 'Completed' : 'Not completed',
-                  style: TextStyle(
-                    color: task.isCompleted ? Colors.green : Colors.grey,
-                    fontSize: 14,
+                ElevatedButton.icon(
+                  onPressed: () => _showDeleteConfirmation(context, task),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: AppColors.offWhite,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                   ),
+                  icon: const Icon(Icons.delete, size: 20),
+                  label: const Text('Delete'),
                 ),
+
               ],
             ),
           ],
