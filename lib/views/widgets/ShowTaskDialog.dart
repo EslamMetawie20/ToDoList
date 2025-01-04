@@ -4,6 +4,7 @@ import 'package:todolist/models/task_model.dart';
 
 import '../../controllers/task_controller.dart';
 import '../themes/theme.dart';
+import 'SnackbarHelper.dart';
 
 class ShowTaskDialog extends StatelessWidget {
   final Task task;
@@ -24,14 +25,14 @@ class ShowTaskDialog extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: Text(
+          title: const Text(
             'Delete Confirmation',
             style: TextStyle(
               color: AppColors.darkBlue,
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: Text(
+          content: const Text(
             'Are you sure you want to delete this task?',
             style: TextStyle(
               color: AppColors.blue,
@@ -39,8 +40,10 @@ class ShowTaskDialog extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              child: const Text(
                 'Cancel',
                 style: TextStyle(
                   color: AppColors.blue,
@@ -49,11 +52,12 @@ class ShowTaskDialog extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                controller.deleteTask(task.id!); // استدعاء الحذف
-                Navigator.pop(context); // إغلاق نافذة التأكيد
-                Navigator.pop(context); // إغلاق نافذة عرض المهمة
+                controller.deleteTask(task.id!);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                SnackbarHelper.showMissionDeletedSnackbar(context,"This Task");
               },
-              child: Text(
+              child: const Text(
                 'Delete',
                 style: TextStyle(
                   color: Colors.red,
@@ -204,7 +208,9 @@ class ShowTaskDialog extends StatelessWidget {
                   ],
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => _showDeleteConfirmation(context, task),
+                  onPressed: () {
+                    _showDeleteConfirmation(context, task);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     foregroundColor: AppColors.offWhite,
