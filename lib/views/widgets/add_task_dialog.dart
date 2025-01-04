@@ -55,30 +55,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                 ),
               ),
               const SizedBox(height: 16),
-              TextField(
-                controller: descriptionController,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  labelText: 'Description',
-                  prefixIcon: Icon(Icons.description, color: AppColors.blue),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: AppColors.blue),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: AppColors.blue),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: AppColors.darkBlue, width: 2),
-                  ),
-                  labelStyle: TextStyle(color: AppColors.blue),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 20),
+
               DropdownButtonFormField<String>(
                 value: priority,
                 items: [
@@ -114,7 +91,30 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                 ),
                 style: TextStyle(color: AppColors.darkBlue),
               ),
-
+              const SizedBox(height: 20),
+              TextField(
+                controller: descriptionController,
+                maxLines: 10,
+                decoration: InputDecoration(
+                  labelText: 'Description (optional) ',
+                  prefixIcon: Icon(Icons.description, color: AppColors.blue),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppColors.blue),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppColors.blue),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppColors.darkBlue, width: 2),
+                  ),
+                  labelStyle: TextStyle(color: AppColors.blue),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+              ),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

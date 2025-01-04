@@ -7,8 +7,20 @@ import 'package:todolist/views/widgets/ShowTaskDialog.dart';
 import 'package:todolist/views/widgets/date_view.dart';
 import '../controllers/task_controller.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
+
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    final controller = Provider.of<TaskController>(context, listen: false);
+    controller.fetchTasks();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +52,17 @@ class HomeView extends StatelessWidget {
                   );
                   return taskDate.isAtSameMomentAs(selectedDate);
                 }).toList();
+
+
+                if (controller.sortBy == 'priority') {
+                  const priorityOrder = {'High': 1, 'Medium': 2, 'Low': 3};
+                  filteredTasks.sort((a, b) {
+                    return (priorityOrder[a.priority] ?? 4)
+                        .compareTo(priorityOrder[b.priority] ?? 4);
+                  });
+                } else if (controller.sortBy == 'added') {
+                  filteredTasks.sort((a, b) => a.id!.compareTo(b.id!));
+                }
 
                 if (filteredTasks.isEmpty) {
                   return Center(
