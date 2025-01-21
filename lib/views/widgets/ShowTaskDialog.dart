@@ -177,15 +177,23 @@ class ShowTaskDialog extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              child: Text(
-                task.descrebtion ?? 'No description provided',
-                style: TextStyle(
-                  color: AppColors.blue,
-                  fontSize: 14,
-                  height: 1.5,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: 100, // أقصى ارتفاع للصندوق
+                ),
+                child: SingleChildScrollView(
+                  child: Text(
+                    task.descrebtion ?? 'No description provided',
+                    style: TextStyle(
+                      color: AppColors.blue,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                  ),
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

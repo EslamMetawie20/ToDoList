@@ -94,13 +94,14 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               const SizedBox(height: 20),
               TextField(
                 controller: descriptionController,
+                minLines: 1,
                 maxLines: 10,
                 decoration: InputDecoration(
                   labelText: 'Description (optional) ',
                   prefixIcon: Icon(Icons.description, color: AppColors.blue),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: AppColors.blue),
+                    borderSide: const BorderSide(color: AppColors.blue),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
